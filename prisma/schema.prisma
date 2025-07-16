@@ -6,20 +6,37 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  output   = "../node_modules/@prisma/sdk"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+model Stock {
+  id            String   @id @default(uuid())
+  symbol        String   @unique
+  logoUrl       String?
+  companyName   String?  @map("company_name")
+  currentPrice  Float?   @map("current_price")
+  percentChange Float?   @map("percent_change")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  createdAt     DateTime @default(now()) @map("created_at")
 
+  posts Post[]
+
+  @@map("stock")
+}
 model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@map("posts")
+  id          String    @id @default(cuid())
+  title       String
+  content     String?
+  isPublished Boolean   @default(false) @map("is_published")
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  stock       Stock?    @relation(fields: [stockId], references: [id])
+  stockId     String?
+
+  @@map("post")
 }
