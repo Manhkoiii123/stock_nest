@@ -29,3 +29,38 @@ khi pull 1 cái repo về thì chạy lệnh deploy để áp vòa local của m
 1pr ko nên để quá nhiều cái migration trong prisma
 
 => xóa hết các migration => rồi migrate lại
+
+# cào data từ vnredirect
+
+tạo lib => `nest g lib vndirect-client` => có hỏi 1 câu thì điền `@manh` (hoặc bất kì @ gì tùy cty)
+
+khi đó ở bên cái nest cli
+
+```ts
+// @manh là cái định nghĩa ở trên
+"@manh/vndirect-client": {
+      "type": "library",
+      "root": "libs/vndirect-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/vndirect-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/vndirect-client/tsconfig.lib.json"
+      }
+    }
+```
+
+call api trong nest => http module
+
+docs `https://docs.nestjs.com/techniques/http-module`
+
+cài
+
+```bash
+npm i @nestjs/axios axios
+```
+
+code trong lib => code => done
+
+khi call xong api => sang bên dùng => format lại dữ liệu trả về
+
+=> tạo `domain/integration-vndirect`

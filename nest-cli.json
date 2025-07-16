@@ -27,6 +27,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/cron-service/tsconfig.app.json"
       }
+    },
+    "@manh/vndirect-client": {
+      "type": "library",
+      "root": "libs/vndirect-client",
+      "entryFile": "index",
+      "sourceRoot": "libs/vndirect-client/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/vndirect-client/tsconfig.lib.json"
+      }
     }
   }
 }

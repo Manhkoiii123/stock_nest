@@ -17,6 +17,13 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-    "paths": {}
+    "paths": {
+      "@manh/vndirect-client": [
+        "libs/vndirect-client/src"
+      ],
+      "@manh/vndirect-client/*": [
+        "libs/vndirect-client/src/*"
+      ]
+    }
   }
 }
