@@ -10,7 +10,7 @@
   "monorepo": true,
   "root": "apps/api-service",
   "projects": {
-    "@app/api-service": {
+    "@apps/api-service": {
       "type": "application",
       "root": "apps/api-service",
       "entryFile": "main",
@@ -19,13 +19,22 @@
         "tsConfigPath": "apps/api-service/tsconfig.app.json"
       }
     },
-    "@app/cron-service": {
+    "@apps/cron-service": {
       "type": "application",
       "root": "apps/cron-service",
       "entryFile": "main",
       "sourceRoot": "apps/cron-service/src",
       "compilerOptions": {
         "tsConfigPath": "apps/cron-service/tsconfig.app.json"
+      }
+    },
+    "@apps/cli-service": {
+      "type": "application",
+      "root": "apps/cli-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/cli-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/cli-service/tsconfig.app.json"
       }
     },
     "@manh/vndirect-client": {
