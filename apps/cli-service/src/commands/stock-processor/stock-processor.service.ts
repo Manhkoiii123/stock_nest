@@ -1,22 +1,19 @@
-import { VndirectClientService } from '@manh/vndirect-client';
 import {
   Injectable,
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { DatabaseService } from 'apps/api-service/src/database/database.service';
+import { StockService } from '../../models/stock/stock.service';
+import { VndirectClientService } from '../../../../../libs/vndirect-client/src';
 
 @Injectable()
-export class IntegrationVndirectService {
-  private logger = new Logger(IntegrationVndirectService.name);
+export class StockProcessorService {
+  private logger = new Logger(StockProcessorService.name);
   constructor(
     private readonly vndirectClientService: VndirectClientService,
-    private readonly databaseService: DatabaseService,
+    private readonly stockService: StockService,
   ) {}
 
-  /**
-   * @deprecated
-   */
   async processStocks() {
     const stocks = await this.vndirectClientService.getStocks();
 
@@ -29,12 +26,7 @@ export class IntegrationVndirectService {
 
     try {
       this.logger.log(`Processing ${processedStocks.length} stocks...`);
-      // persist database;
-      await this.databaseService.stock.createMany({
-        data: processedStocks,
-        skipDuplicates: true,
-      });
-
+      await this.stockService.createMany(processedStocks);
       this.logger.log('Stocks processed and saved to database successfully.');
     } catch (error) {
       this.logger.error('Error processing stocks:', error);

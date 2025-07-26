@@ -262,3 +262,214 @@ sửa trong cái `package.json` gốc
 chạy `npm run start:cli basic` => ra được `{ param: [] }`
 
 chạy `npm run start:cli -- basic -n 11` thì sẽ ra được `{ param: [], number: 11 }`
+
+### áp dụng vào bài VNDirect
+
+viết cái `apps\cli-service\src\stock-processor\stock-processor.service.ts` nó tương tự như cái service của `apps\api-service\src\domain\integration-vndirect\intergration-vndirect.service.ts`
+
+```ts
+import { VndirectClientService } from '@manh/vndirect-client';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+import { DatabaseService } from 'apps/api-service/src/database/database.service';
+
+@Injectable()
+export class StockProcessorService {
+  private logger = new Logger(StockProcessorService.name);
+  constructor(
+    private readonly vndirectClientService: VndirectClientService,
+    private readonly databaseService: DatabaseService,
+  ) {}
+
+  async processStocks() {
+    const stocks = await this.vndirectClientService.getStocks();
+
+    const processedStocks = stocks.map((stock) => {
+      return {
+        symbol: stock?.code,
+        companyName: stock.companyName,
+      };
+    });
+
+    try {
+      this.logger.log(`Processing ${processedStocks.length} stocks...`);
+      await this.databaseService.stock.createMany({
+        data: processedStocks,
+        skipDuplicates: true,
+      });
+
+      this.logger.log('Stocks processed and saved to database successfully.');
+    } catch (error) {
+      this.logger.error('Error processing stocks:', error);
+      throw new InternalServerErrorException('Failed to process stocks');
+    }
+  }
+}
+```
+
+copy y nguyên sang thì xóa cái bên `intergration-vndirect.service.ts` đi nhwung để test xong r xóa thì đánh dấu nó là
+
+```ts
+/**
+ * @deprecated
+ */
+```
+
+thì bên controller sử dụng cái hàm kia bên service => nó sẽ bị gạch ngang (như 1 hàm đã hết hỗ trợ)
+
+thấy cái `stock-pro.service.ts` cần cái db => tạm thời copy cái db ném vào cái `cli-ser/src` (còn 1 cái trò là ném cái database thành cái lib riêng) => done
+
+chuẩn cấu trúc thư mục
+
+src/commands/stock-processor => gọi lại cái stock trong cái models
+
+src/models/stock => cái này sẽ là cái crud vào db của mình
+
+code `stock.module.ts` trước
+
+```ts
+import { Module } from '@nestjs/common';
+import { StockService } from './stock.service';
+
+@Module({
+  providers: [StockService],
+  exports: [StockService], // do cái stock-processor sẽ dùng nên phải có cả export
+})
+export class StockModule {}
+```
+
+code `stock.service.ts`
+
+```ts
+import { Injectable, Logger } from '@nestjs/common';
+import { CreateStockDto } from './dto/create-stock.dto';
+import { DatabaseService } from '../../database/database.service';
+
+@Injectable()
+export class StockService {
+  private readonly logger = new Logger(StockService.name);
+
+  constructor(private readonly databaseService: DatabaseService) {}
+
+  async createMany(data: CreateStockDto[]) {
+    try {
+      this.logger.log(`Creating ${data.length} stocks...`);
+      return await this.databaseService.stock.createMany({
+        data,
+        skipDuplicates: true,
+      });
+    } catch (error) {
+      this.logger.error('Failed to create stocks:', error);
+      throw new Error(`Failed to create stocks: ${error.message}`);
+    }
+  }
+}
+```
+
+dùng bên `stock-processor.module.ts`
+
+```ts
+import { Module } from '@nestjs/common';
+import { StockModule } from '../../models/stock/stock.module';
+import { StockProcessorService } from './stock-processor.service';
+
+@Module({
+  imports: [StockModule],
+  providers: [StockProcessorService],
+})
+export class StockProcessorModule {}
+```
+
+khi đó sửa lại cái `stock-pro.service`
+
+```ts
+import { VndirectClientService } from '@manh/vndirect-client';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+import { StockService } from '../../models/stock/stock.service';
+
+@Injectable()
+export class StockProcessorService {
+  private logger = new Logger(StockProcessorService.name);
+  constructor(
+    private readonly vndirectClientService: VndirectClientService,
+    private readonly stockService: StockService,
+  ) {}
+
+  async processStocks() {
+    const stocks = await this.vndirectClientService.getStocks();
+
+    const processedStocks = stocks.map((stock) => {
+      return {
+        symbol: stock?.code,
+        companyName: stock.companyName,
+      };
+    });
+
+    try {
+      this.logger.log(`Processing ${processedStocks.length} stocks...`);
+      await this.stockService.createMany(processedStocks);
+      this.logger.log('Stocks processed and saved to database successfully.');
+    } catch (error) {
+      this.logger.error('Error processing stocks:', error);
+      throw new InternalServerErrorException('Failed to process stocks');
+    }
+  }
+}
+```
+
+viết command ở file `stock-processor.service.ts`
+
+```ts
+import { Command, CommandRunner } from 'nest-commander';
+import { StockProcessorService } from './stock-processor.service';
+
+@Command({ name: 'process-stocks', description: 'Process stocks' })
+export class StockProcessorCommand extends CommandRunner {
+  constructor(private readonly stockProcessorService: StockProcessorService) {
+    super();
+  }
+
+  async run(): Promise<void> {
+    await this.stockProcessorService.processStocks();
+  }
+}
+```
+
+trong `app.module` của cli-service
+
+```ts
+import { Module } from '@nestjs/common';
+import { BasicCommand } from './basic.command';
+import { StockProcessorModule } from './commands/stock-processor/stock-processor.module';
+
+@Module({
+  providers: [BasicCommand],
+  imports: [StockProcessorModule, DatabaseModule],
+})
+export class AppModule {}
+```
+
+trong cái `stock-processor.module.ts`
+
+```ts
+import { Module } from '@nestjs/common';
+import { StockModule } from '../../models/stock/stock.module';
+import { StockProcessorService } from './stock-processor.service';
+import { VndirectClientModule } from '../../../../../libs/vndirect-client/src';
+import { StockProcessorCommand } from './stock-processor.command';
+
+@Module({
+  imports: [StockModule, VndirectClientModule],
+  providers: [StockProcessorService, StockProcessorCommand],
+})
+export class StockProcessorModule {}
+```
+
+=> chạy bằng `npm run start:cli process-stocks`

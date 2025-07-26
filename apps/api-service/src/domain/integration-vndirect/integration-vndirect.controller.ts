@@ -8,6 +8,9 @@ export class IntegrationVndirectController {
   ) {}
 
   // Cron job 8 AM weekdays
+  /**
+   * @deprecated
+   */
   @Post('process-stocks')
   async processStocks() {
     await this.integrationVndirectService.processStocks();
