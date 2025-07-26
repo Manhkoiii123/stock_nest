@@ -18,7 +18,7 @@
     "start:dev:api": "nest start --watch @apps/api-service",
     "start:dev:cli": "nest start --watch @apps/cli-service",
     "start:dev:cron": "nest start --watch @apps/cron-service",
-    "start:cli": "ts-node apps/cli-service/src/main.ts",
+    "start:cli": "ts-node -r tsconfig-paths/register apps/cli-service/src/main.ts",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/apps/stock/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",

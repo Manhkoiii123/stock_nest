@@ -473,3 +473,7 @@ export class StockProcessorModule {}
 ```
 
 => chạy bằng `npm run start:cli process-stocks`
+
+### fix import
+
+tại lỗi ở đây `import { VndirectClientService } from '../../../../../libs/vndirect-client/src';`
