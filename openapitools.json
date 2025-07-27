@@ -6,8 +6,8 @@
     "generators": {
       "vndirect": {
         "generatorName": "typescript-axios",
-        "inputSpec": "libs/vndirect-client/src/utils/oas.yml",
-        "output": "libs/vndirect-client/src/client/generated",
+        "inputSpec": "libs/dstock/src/utils/oas.yml",
+        "output": "libs/dstock/src/client/generated",
         "additionalProperties": {
           "stringEnums": true,
           "supportsES6": true,
