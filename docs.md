@@ -1,4 +1,4 @@
-# buổi 2
+# Buổi 2
 
 generate prisma client => ` npx prisma generate --schema=./prisma/schema.prisma` => nó sẽ đẩy cái file generated vào node_modules/@prisma/sdk
 
@@ -6,7 +6,7 @@ nhưng trong db trong postgres thì chưa có cái table `stock` và `post`
 
 chạy `npm run prisma:migration:generate` để tạo cái migration file
 
-# các trường hợp thường gặp khi lỗi
+## các trường hợp thường gặp khi lỗi
 
 khi đã có data trong table => thêm 1 cái trường vào schema require vào => conflict => xem đẫ có data chưa => làm sao để sửa
 
@@ -30,7 +30,7 @@ khi pull 1 cái repo về thì chạy lệnh deploy để áp vòa local của m
 
 => xóa hết các migration => rồi migrate lại
 
-# cào data từ vnredirect
+## cào data từ vnredirect
 
 tạo lib => `nest g lib vndirect-client` => có hỏi 1 câu thì điền `@manh` (hoặc bất kì @ gì tùy cty)
 
@@ -65,7 +65,7 @@ khi call xong api => sang bên dùng => format lại dữ liệu trả về
 
 => tạo `domain/integration-vndirect`
 
-# buổi 3
+# Buổi 3
 
 giải quyết vấn đề gì?
 
@@ -523,3 +523,6 @@ vndirect.config({url:....,token:...}) => gọi vndirect.getStock => làm code g�
 => file `providers.ts`
 
 => viết file `vndirect-client.module.ts` => service => sửa lại cái interface ở cái `stock-processor.service`
+
+# Buổi 4
+
