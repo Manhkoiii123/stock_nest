@@ -1,0 +1,73 @@
+openapi: 3.0.3
+info:
+  title: VNDIRECT Stocks API
+  version: 1.0.0
+  description: API for retrieving stock information from VNDIRECT
+
+servers:
+  - url: https://api-finfo.vndirect.com.vn
+
+paths:
+  /v4/stocks:
+    get:
+      tags:
+        - Stock
+      summary: Get list of stocks
+      operationId: getStocks
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currentPage:
+                    type: integer
+                    example: 1
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: 'ENF'
+                        companyId:
+                          type: string
+                          example: '3903'
+                        companyName:
+                          type: string
+                          example: 'Quỹ Đầu tư Năng động Eastspring Investments Việt Nam'
+                        companyNameEng:
+                          type: string
+                          example: 'Eastspring Investments Vietnam Navigator Fund'
+                        delistedDate:
+                          type: string
+                          format: date
+                          example: '2001-01-01'
+                        floor:
+                          type: string
+                          example: 'UPCOM'
+                        listedDate:
+                          type: string
+                          format: date
+                          example: '2001-01-01'
+                        shortName:
+                          type: string
+                          example: 'Quỹ đầu tư ENF'
+                        status:
+                          type: string
+                          example: 'delisted'
+                        type:
+                          type: string
+                          example: 'IFC'
+                  size:
+                    type: integer
+                    example: 9999
+                  totalElements:
+                    type: integer
+                    example: 1958
+                  totalPages:
+                    type: integer
+                    example: 1

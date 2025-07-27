@@ -29,13 +29,16 @@
     "test:e2e": "jest --config ./apps/stock/test/jest-e2e.json",
     "prisma:generate-client": "npx prisma generate --schema=./prisma/schema.prisma",
     "prisma:migration:generate": "npx prisma migrate dev --schema=./prisma/schema.prisma",
-    "prisma:migration:deploy": "npx prisma migrate deploy --schema=./prisma/schema.prisma"
+    "prisma:migration:deploy": "npx prisma migrate deploy --schema=./prisma/schema.prisma",
+    "codegen": "openapi-generator-cli generate",
+    "post-codegen": "npm lint"
   },
   "dependencies": {
     "@nestjs/axios": "^4.0.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@openapitools/openapi-generator-cli": "^2.21.4",
     "@prisma/client": "^6.11.1",
     "axios": "^1.10.0",
     "class-transformer": "^0.5.1",

@@ -477,3 +477,49 @@ export class StockProcessorModule {}
 ### fix import
 
 tại lỗi ở đây `import { VndirectClientService } from '../../../../../libs/vndirect-client/src';`
+
+##
+
+vấn đề
+
+```ts
+ method: 'GET',
+          url: 'https://api-finfo.vndirect.com.vn/v4/stocks',
+          params: {
+            q: 'type:STOCK~status:LISTED',
+            size: 3000,
+          },
+        })
+```
+
+lặp cái này
+
+hoặc là cái đầu api phải là dynamic url ví dụ {{url}}/v4/... + tự định nghĩa interface => nhập nhằng
+
+refactor cái `vn-client.service` để làm gì
+
+khi cần cái token truyền lên kèm theo => 100 cái api => 100 cái token kèm theo => sử dụng `orh.yaml`
+
+nó như cái swagger => biến nó thành 1 cái sdk để sử dụng
+
+=> lên gpt viết `help me gene oas.yaml for api request ` => ném cái url của vndirect vào => ném cái reponse mẫu trả về
+
+dán file generate trong utils vào => cài thư viện để genearete từ cái yml sang sdk
+
+```bash
+ npm i @openapitools/openapi-generator-cli
+```
+
+có 1 file là `openapitools.json`
+
+chạy => codegen => tự tạo cái generated trong client => khi đó khi gọi api ko cần cái vndirect-service nữa => đã xử lí đươc interface bên yml => build được sdk rồi
+
+config thêm 1 cái wrapper axios nữa để call api
+
+ý tưởng sẽ là
+
+vndirect.config({url:....,token:...}) => gọi vndirect.getStock => làm code gọn hơn chứ ko nhanh hơn là mấy
+
+=> file `providers.ts`
+
+=> viết file `vndirect-client.module.ts` => service => sửa lại cái interface ở cái `stock-processor.service`

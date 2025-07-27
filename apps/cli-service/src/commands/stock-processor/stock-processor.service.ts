@@ -19,8 +19,8 @@ export class StockProcessorService {
 
     const processedStocks = stocks.map((stock) => {
       return {
-        symbol: stock?.code,
-        companyName: stock.companyName,
+        symbol: stock?.code ?? '',
+        companyName: stock.companyName ?? '',
       };
     });
 
