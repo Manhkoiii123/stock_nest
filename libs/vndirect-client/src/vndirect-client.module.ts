@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { VndirectClientService } from './vndirect-client.service';
 import { HttpModule } from '@nestjs/axios';
 import { injectApiProvider } from './utils/providers';
-import { StockApi } from './client/generated';
+import { NewsApi, StockApi } from './client/generated';
 
 // singleton desgin pattern
 // for root => là sing
@@ -16,7 +16,11 @@ import { StockApi } from './client/generated';
     }),
   ],
   // stockapi là 1 tag ở cái file oas.yml
-  providers: [VndirectClientService, injectApiProvider(StockApi)],
+  providers: [
+    VndirectClientService,
+    injectApiProvider(StockApi),
+    injectApiProvider(NewsApi),
+  ],
   exports: [VndirectClientService],
 })
 export class VndirectClientModule {}

@@ -523,3 +523,12 @@ vndirect.config({url:....,token:...}) => gọi vndirect.getStock => làm code g�
 => file `providers.ts`
 
 => viết file `vndirect-client.module.ts` => service => sửa lại cái interface ở cái `stock-processor.service`
+
+# buổi 4
+
+phần cào data bài news là đã tự làm được bên phần pr của github (ko merge vào)
+
+- viết file oas => ném lên gpt để nó viết nhưng mà ném cái response có cả data:[...] => ok
+
+- chạy cái `npm run codegen`
+

@@ -29,6 +29,140 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 /**
  * 
  * @export
+ * @interface GetNews200Response
+ */
+export interface GetNews200Response {
+    /**
+     * 
+     * @type {number}
+     * @memberof GetNews200Response
+     */
+    'currentPage'?: number;
+    /**
+     * 
+     * @type {Array<GetNews200ResponseDataInner>}
+     * @memberof GetNews200Response
+     */
+    'data'?: Array<GetNews200ResponseDataInner>;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetNews200Response
+     */
+    'size'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetNews200Response
+     */
+    'totalElements'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetNews200Response
+     */
+    'totalPages'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface GetNews200ResponseDataInner
+ */
+export interface GetNews200ResponseDataInner {
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'dstockUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'hotNews'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'locale'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'newsAbstract'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'newsContent'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'newsDate'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'newsGroup'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'newsId'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'newsSource'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'newsTime'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'newsTitle'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'newsType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'newsUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'tagCodes'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GetNews200ResponseDataInner
+     */
+    'thumbnailUrl'?: string;
+}
+/**
+ * 
+ * @export
  * @interface GetStocks200Response
  */
 export interface GetStocks200Response {
@@ -130,6 +264,170 @@ export interface GetStocks200ResponseDataInner {
      */
     'type'?: string;
 }
+
+/**
+ * NewsApi - axios parameter creator
+ * @export
+ */
+export const NewsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Get filtered news list
+         * @param {string} q Filter query for news, e.g., &#x60;newsSource:VNECONOMY,TAPCHICONGTHUONG~newsType:banking_finance_news,stock_news,company_news&#x60;
+         * @param {string} [sort] Sort field, e.g., &#x60;newsDate:desc~newsTime:desc&#x60;
+         * @param {number} [size] Number of results per page
+         * @param {number} [page] Page number
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getNews: async (q: string, sort?: string, size?: number, page?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'q' is not null or undefined
+            assertParamExists('getNews', 'q', q)
+            const localVarPath = `/v4/news`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (q !== undefined) {
+                localVarQueryParameter['q'] = q;
+            }
+
+            if (sort !== undefined) {
+                localVarQueryParameter['sort'] = sort;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * NewsApi - functional programming interface
+ * @export
+ */
+export const NewsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = NewsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Get filtered news list
+         * @param {string} q Filter query for news, e.g., &#x60;newsSource:VNECONOMY,TAPCHICONGTHUONG~newsType:banking_finance_news,stock_news,company_news&#x60;
+         * @param {string} [sort] Sort field, e.g., &#x60;newsDate:desc~newsTime:desc&#x60;
+         * @param {number} [size] Number of results per page
+         * @param {number} [page] Page number
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getNews(q: string, sort?: string, size?: number, page?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetNews200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getNews(q, sort, size, page, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['NewsApi.getNews']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * NewsApi - factory interface
+ * @export
+ */
+export const NewsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = NewsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Get filtered news list
+         * @param {NewsApiGetNewsRequest} requestParameters Request parameters.
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getNews(requestParameters: NewsApiGetNewsRequest, options?: RawAxiosRequestConfig): AxiosPromise<GetNews200Response> {
+            return localVarFp.getNews(requestParameters.q, requestParameters.sort, requestParameters.size, requestParameters.page, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for getNews operation in NewsApi.
+ * @export
+ * @interface NewsApiGetNewsRequest
+ */
+export interface NewsApiGetNewsRequest {
+    /**
+     * Filter query for news, e.g., &#x60;newsSource:VNECONOMY,TAPCHICONGTHUONG~newsType:banking_finance_news,stock_news,company_news&#x60;
+     * @type {string}
+     * @memberof NewsApiGetNews
+     */
+    readonly q: string
+
+    /**
+     * Sort field, e.g., &#x60;newsDate:desc~newsTime:desc&#x60;
+     * @type {string}
+     * @memberof NewsApiGetNews
+     */
+    readonly sort?: string
+
+    /**
+     * Number of results per page
+     * @type {number}
+     * @memberof NewsApiGetNews
+     */
+    readonly size?: number
+
+    /**
+     * Page number
+     * @type {number}
+     * @memberof NewsApiGetNews
+     */
+    readonly page?: number
+}
+
+/**
+ * NewsApi - object-oriented interface
+ * @export
+ * @class NewsApi
+ * @extends {BaseAPI}
+ */
+export class NewsApi extends BaseAPI {
+    /**
+     * 
+     * @summary Get filtered news list
+     * @param {NewsApiGetNewsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof NewsApi
+     */
+    public getNews(requestParameters: NewsApiGetNewsRequest, options?: RawAxiosRequestConfig) {
+        return NewsApiFp(this.configuration).getNews(requestParameters.q, requestParameters.sort, requestParameters.size, requestParameters.page, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
 
 /**
  * StockApi - axios parameter creator

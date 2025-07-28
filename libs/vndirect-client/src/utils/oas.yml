@@ -71,3 +71,107 @@ paths:
                   totalPages:
                     type: integer
                     example: 1
+  /v4/news:
+    get:
+      tags:
+        - News
+      summary: Get filtered news list
+      operationId: getNews
+      parameters:
+        - name: q
+          in: query
+          description: Filter query for news, e.g., `newsSource:VNECONOMY,TAPCHICONGTHUONG~newsType:banking_finance_news,stock_news,company_news`
+          required: true
+          schema:
+            type: string
+        - name: sort
+          in: query
+          description: Sort field, e.g., `newsDate:desc~newsTime:desc`
+          required: false
+          schema:
+            type: string
+        - name: size
+          in: query
+          description: Number of results per page
+          required: false
+          schema:
+            type: integer
+            default: 100
+        - name: page
+          in: query
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currentPage:
+                    type: integer
+                    example: 1
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        dstockUrl:
+                          type: string
+                          example: 'https://dstock.vndirect.com.vn/tin-tuc/tin-chung-khoan/10713362'
+                        hotNews:
+                          type: string
+                          example: 'N'
+                        locale:
+                          type: string
+                          example: 'VN'
+                        newsAbstract:
+                          type: string
+                          example: 'Thị trường liên tục quay về mức đỉnh lịch sử...'
+                        newsContent:
+                          type: string
+                          example: '<body>...</body>'
+                        newsDate:
+                          type: string
+                          format: date
+                          example: '2025-07-27'
+                        newsGroup:
+                          type: string
+                          example: 'stock_news'
+                        newsId:
+                          type: string
+                          example: '10713362'
+                        newsSource:
+                          type: string
+                          example: 'VNECONOMY'
+                        newsTime:
+                          type: string
+                          example: '11:37:07'
+                        newsTitle:
+                          type: string
+                          example: 'VN-Index liên tiếp lên đỉnh...'
+                        newsType:
+                          type: string
+                          example: 'stock_news'
+                        newsUrl:
+                          type: string
+                          example: 'https://vneconomy.vn/vn-index-lien-tiep-len-dinh...'
+                        tagCodes:
+                          type: string
+                          example: 'GEE,SHB,HSG'
+                        thumbnailUrl:
+                          type: string
+                          example: 'https://media.vneconomy.vn/w800/images/upload//2025/07/27/lo-tau-1.jpg'
+                  size:
+                    type: integer
+                    example: 12
+                  totalElements:
+                    type: integer
+                    example: 15420
+                  totalPages:
+                    type: integer
+                    example: 1285

@@ -1,6 +1,6 @@
 // import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
-import { StockApi } from './client/generated';
+import { NewsApi, StockApi } from './client/generated';
 
 // export interface VndirectStock {
 //   code: string;
@@ -22,7 +22,10 @@ export class VndirectClientService {
   private logger = new Logger(VndirectClientService.name);
 
   // constructor(private readonly httpService: HttpService) {}
-  constructor(private readonly stockApi: StockApi) {}
+  constructor(
+    private readonly stockApi: StockApi,
+    private readonly newsApi: NewsApi,
+  ) {}
 
   // async getStocks(): Promise<VndirectStock[]> {
   //   try {
@@ -62,6 +65,28 @@ export class VndirectClientService {
       return data;
     } catch (error) {
       this.logger.error('Failed to fetch stocks', error);
+      throw error;
+    }
+  }
+
+  async getNews() {
+    try {
+      this.logger.log('Fetching news from Vndirect API...');
+      const response = await this.newsApi.getNews({
+        q: 'newsSource:VNECONOMY,TAPCHICONGTHUONG~newsType:banking_finance_news,stock_news,company_news',
+        size: 100,
+        page: 1,
+      });
+
+      const data = response?.data?.data;
+      if (!data) {
+        this.logger.warn('No news data found');
+        return [];
+      }
+
+      return data;
+    } catch (error) {
+      this.logger.error('Failed to fetch news', error);
       throw error;
     }
   }
