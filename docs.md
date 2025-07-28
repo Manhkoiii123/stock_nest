@@ -592,5 +592,3 @@ bắt đầu cào và chèn
 ```schema
 vndirectId String? @map("vndirect_id") thêm vào trường post để làm cái có r thì ko thêm nữa
 ```
-
-1 46 48
