@@ -532,3 +532,57 @@ phần cào data bài news là đã tự làm được bên phần pr của gith
 
 - chạy cái `npm run codegen`
 
+## cron
+
+### c1
+
+@Cron => mặc định của nest
+
+```ts
+@Cron("45 * * * *")
+```
+
+=> nhược diểm khi deploy thì con server luôn chạy 24/7 => tốn tiền
+
+### c2 nest standalone application
+
+giúp ta 1 app như 1 cái service thôi, service đó sẽ trigger bởi 1 dịch vụ nào đó => aws sẽ lo vụ này(event bridge)
+
+thay vì define trong codebase => chúng ta chỉ cần event bridge trigger => tiết kiệm được chi phí
+
+b1 tạo `app.module.ts`
+
+```ts
+import { Module } from '@nestjs/common';
+
+@Module({
+  imports: [],
+  providers: [],
+})
+export class AppModule {}
+```
+
+`main.ts`
+
+```ts
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+
+// event bridge
+// cron
+// standlone application
+
+// News everyday 7AM
+// Stocks everyweek Saturday 7AM
+
+async function bootstrap() {
+  const app = await NestFactory.createApplicationContext(AppModule);
+  // const jobProcessor = app.get(JobProcessor);
+  // jobProcessor.process();
+}
+bootstrap();
+```
+
+tạo 2 thư mục `context` chứa ngữ cảnh cron nó làm gì(towuong tự command) và `models` tương tác với db
+
+=> viết file `job.processor.ts` => import vào `main.ts` => viết 2 cái `news.processor.ts` và `stock.processor.ts` => import nó vào `job.processor.ts`
