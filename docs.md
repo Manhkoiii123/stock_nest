@@ -586,3 +586,11 @@ bootstrap();
 tạo 2 thư mục `context` chứa ngữ cảnh cron nó làm gì(towuong tự command) và `models` tương tác với db
 
 => viết file `job.processor.ts` => import vào `main.ts` => viết 2 cái `news.processor.ts` và `stock.processor.ts` => import nó vào `job.processor.ts`
+
+bắt đầu cào và chèn
+
+```schema
+vndirectId String? @map("vndirect_id") thêm vào trường post để làm cái có r thì ko thêm nữa
+```
+
+1 46 48

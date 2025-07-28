@@ -37,6 +37,7 @@ model Post {
   updatedAt   DateTime  @updatedAt @map("updated_at")
   stock       Stock?    @relation(fields: [stockId], references: [id])
   stockId     String?
+  vndirectId String? @map("vndirect_id")
 
   @@map("post")
 }
