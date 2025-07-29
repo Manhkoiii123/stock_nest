@@ -9,13 +9,14 @@ export function injectApiProvider<T>(
     basePath?: string,
     axios?: AxiosInstance,
   ) => T,
+  options?: { baseUrl?: string },
 ): FactoryProvider<T> {
   return {
     provide: ApiClass,
     inject: [HttpService],
     useFactory: (httpService: HttpService) => {
       const config = new Configuration({
-        basePath: 'https://api-finfo.vndirect.com.vn',
+        basePath: options?.baseUrl || 'https://api-finfo.vndirect.com.vn',
       });
 
       return new ApiClass(config, config.basePath, httpService.axiosRef);

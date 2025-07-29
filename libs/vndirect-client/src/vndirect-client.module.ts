@@ -19,7 +19,9 @@ import { NewsApi, StockApi } from './client/generated';
   providers: [
     VndirectClientService,
     injectApiProvider(StockApi),
-    injectApiProvider(NewsApi),
+    injectApiProvider(NewsApi, {
+      baseUrl: 'https://finfo-api.ipas.com.vn',
+    }),
   ],
   exports: [VndirectClientService],
 })
