@@ -97,6 +97,7 @@
       "<rootDir>/libs/"
     ],
     "moduleNameMapper": {
+      "^@manh/database(|/.*)$": "<rootDir>/libs/database/src/$1",
       "^@manh/vndirect-client(|/.*)$": "<rootDir>/libs/vndirect-client/src/$1"
     }
   }

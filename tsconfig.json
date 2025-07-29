@@ -18,6 +18,12 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
+      "@manh/database": [
+        "libs/database/src"
+      ],
+      "@manh/database/*": [
+        "libs/database/src/*"
+      ],
       "@manh/vndirect-client": [
         "libs/vndirect-client/src"
       ],

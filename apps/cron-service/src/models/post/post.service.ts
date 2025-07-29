@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { DatabaseService } from '../../database/database.service';
 import { CreatePostDto } from '../../context/news-processor/dto/create-post.dto';
+import { DatabaseService } from '../../../../../libs/database/src';
 
 @Injectable()
 export class PostService {

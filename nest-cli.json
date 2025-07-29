@@ -19,15 +19,6 @@
         "tsConfigPath": "apps/api-service/tsconfig.app.json"
       }
     },
-    "@apps/cron-service": {
-      "type": "application",
-      "root": "apps/cron-service",
-      "entryFile": "main",
-      "sourceRoot": "apps/cron-service/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/cron-service/tsconfig.app.json"
-      }
-    },
     "@apps/cli-service": {
       "type": "application",
       "root": "apps/cli-service",
@@ -37,6 +28,15 @@
         "tsConfigPath": "apps/cli-service/tsconfig.app.json"
       }
     },
+    "@apps/cron-service": {
+      "type": "application",
+      "root": "apps/cron-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/cron-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/cron-service/tsconfig.app.json"
+      }
+    },
     "@manh/vndirect-client": {
       "type": "library",
       "root": "libs/vndirect-client",
@@ -44,6 +44,15 @@
       "sourceRoot": "libs/vndirect-client/src",
       "compilerOptions": {
         "tsConfigPath": "libs/vndirect-client/tsconfig.lib.json"
+      }
+    },
+    "database": {
+      "type": "library",
+      "root": "libs/database",
+      "entryFile": "index",
+      "sourceRoot": "libs/database/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/database/tsconfig.lib.json"
       }
     }
   }

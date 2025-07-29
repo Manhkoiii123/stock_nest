@@ -60,8 +60,5 @@ export class NewsProcessor {
         `Created post with ID ${newPost.id} for news ID ${news.newsId}`,
       );
     }
-
-    // vndirect vs db
-    // persist to db
   }
 }
