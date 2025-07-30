@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateStockDto } from './dto/create-stock.dto';
-import { DatabaseService } from '../../database/database.service';
+import { DatabaseService } from '../../../../../libs/database/src';
 
 @Injectable()
 export class StockService {

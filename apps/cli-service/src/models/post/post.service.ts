@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { Injectable, Logger } from '@nestjs/common';
-import { DatabaseService } from '../../database/database.service';
 import { CreatePostDto } from './dto/create-post.dto';
+import { DatabaseService } from '../../../../../libs/database/src';
 
 @Injectable()
 export class PostService {
