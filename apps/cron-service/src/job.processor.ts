@@ -21,16 +21,18 @@ export class JobProcessor {
     const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
 
     // News everyday 7AM (Monday to Sunday)
-    if ([7, 9].includes(currentHour)) {
+    if ([7, 15].includes(currentHour)) {
       this.logger.log(`Processing news at ${currentHour}:00...`);
-      this.newsProcessor.process();
+      // this.newsProcessor.process();
+      this.stocksProcessor.process();
     }
 
     // Stocks every Saturday 10AM
     if (currentDay === 6 && currentHour === 10) {
       // Saturday = 6
+      // this.newsProcessor.process();
+      // this.stocksProcessor.process();
       this.logger.log('Processing stocks at 10AM Saturday...');
-      this.stocksProcessor.process();
     }
   }
 }

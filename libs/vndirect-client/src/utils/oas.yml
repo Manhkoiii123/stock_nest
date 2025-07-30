@@ -6,6 +6,7 @@ info:
 
 servers:
   - url: https://api-finfo.vndirect.com.vn
+  - url: https://dchart-api.vndirect.com.vn
 
 paths:
   /v4/stocks:
@@ -175,3 +176,84 @@ paths:
                   totalPages:
                     type: integer
                     example: 1285
+  /dchart/history:
+    get:
+      tags:
+        - Chart
+      summary: Get historical stock chart data
+      operationId: getChartHistory
+      parameters:
+        - name: resolution
+          in: query
+          required: true
+          description: Time resolution (e.g., 1D, 1W, 1)
+          schema:
+            type: string
+            example: 1D
+        - name: symbol
+          in: query
+          required: true
+          description: Stock symbol (e.g., CSC)
+          schema:
+            type: string
+            example: CSC
+        - name: from
+          in: query
+          required: false
+          description: Start timestamp (Unix time)
+          schema:
+            type: integer
+        - name: to
+          in: query
+          required: false
+          description: End timestamp (Unix time)
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Historical price data returned
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  t:
+                    type: array
+                    description: List of timestamps (Unix time)
+                    items:
+                      type: integer
+                    example: [1622505600, 1622592000, 1622678400]
+                  c:
+                    type: array
+                    description: Closing prices
+                    items:
+                      type: number
+                    example: [20.5, 21.0, 21.3]
+                  o:
+                    type: array
+                    description: Opening prices
+                    items:
+                      type: number
+                    example: [20.0, 20.8, 21.1]
+                  h:
+                    type: array
+                    description: High prices
+                    items:
+                      type: number
+                    example: [21.0, 21.5, 21.6]
+                  l:
+                    type: array
+                    description: Low prices
+                    items:
+                      type: number
+                    example: [19.8, 20.5, 21.0]
+                  v:
+                    type: array
+                    description: Volume data
+                    items:
+                      type: number
+                    example: [100000, 150000, 130000]
+                  s:
+                    type: string
+                    description: Status of the response
+                    example: 'ok'

@@ -1,6 +1,6 @@
 // import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger } from '@nestjs/common';
-import { NewsApi, StockApi } from './client/generated';
+import { ChartApi, NewsApi, StockApi } from './client/generated';
 
 // export interface VndirectStock {
 //   code: string;
@@ -25,6 +25,7 @@ export class VndirectClientService {
   constructor(
     private readonly stockApi: StockApi,
     private readonly newsApi: NewsApi,
+    private readonly chartApi: ChartApi,
   ) {}
 
   // async getStocks(): Promise<VndirectStock[]> {
@@ -85,6 +86,38 @@ export class VndirectClientService {
       }
 
       return data;
+    } catch (error) {
+      this.logger.error('Failed to fetch news', error);
+      throw error;
+    }
+  }
+  async getPriceHistory(
+    resolution: string,
+    symbol: string,
+  ): Promise<{ currentPrice: number; changePrice: number }> {
+    try {
+      this.logger.log('Fetching news from Vndirect API...');
+      const response = await this.chartApi.getChartHistory({
+        resolution,
+        symbol,
+      });
+
+      const data = response?.data.c as number[];
+      if (!data || data.length < 2) {
+        this.logger.warn('No price history data found');
+        return { currentPrice: 0, changePrice: 0 };
+      }
+      const currentPrice = data[data.length - 1];
+      if (!currentPrice) {
+        this.logger.warn('No price history data found');
+        return { currentPrice: 0, changePrice: 0 };
+      }
+      const changePrice =
+        ((data[data.length - 1] - data[data.length - 2]) /
+          data[data.length - 2]) *
+        100;
+
+      return { currentPrice, changePrice };
     } catch (error) {
       this.logger.error('Failed to fetch news', error);
       throw error;

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { VndirectClientService } from './vndirect-client.service';
 import { HttpModule } from '@nestjs/axios';
 import { injectApiProvider } from './utils/providers';
-import { NewsApi, StockApi } from './client/generated';
+import { ChartApi, NewsApi, StockApi } from './client/generated';
 
 // singleton desgin pattern
 // for root => là sing
@@ -21,6 +21,9 @@ import { NewsApi, StockApi } from './client/generated';
     injectApiProvider(StockApi),
     injectApiProvider(NewsApi, {
       baseUrl: 'https://finfo-api.ipas.com.vn',
+    }),
+    injectApiProvider(ChartApi, {
+      baseUrl: 'https://dchart-api.vndirect.com.vn',
     }),
   ],
   exports: [VndirectClientService],
