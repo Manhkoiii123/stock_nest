@@ -103,9 +103,12 @@ export class VndirectClientService {
       });
 
       const data = response?.data.c as number[];
-      if (!data || data.length < 2) {
+      if (!data) {
         this.logger.warn('No price history data found');
         return { currentPrice: 0, changePrice: 0 };
+      } else if (data.length < 2) {
+        this.logger.warn('Not enough price history data to calculate change');
+        return { currentPrice: data[0] || 0, changePrice: 0 };
       }
       const currentPrice = data[data.length - 1];
       if (!currentPrice) {
