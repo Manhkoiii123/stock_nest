@@ -15,6 +15,30 @@ paths:
         - Stock
       summary: Get list of stocks
       operationId: getStocks
+      parameters:
+        - name: q
+          in: query
+          description: >
+            Filter string using `key:value` pairs joined by `~`.
+            Example: `status:LISTED~type:STOCK` filters stocks that are listed and of type STOCK.
+          required: false
+          schema:
+            type: string
+            example: status:LISTED~type:STOCK
+        - name: size
+          in: query
+          description: Number of records to return (max size is server-defined)
+          required: false
+          schema:
+            type: integer
+            example: 10000
+        - name: page
+          in: query
+          description: Page number (starting from 1)
+          required: false
+          schema:
+            type: integer
+            example: 1
       responses:
         '200':
           description: Successful response

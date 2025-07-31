@@ -653,10 +653,13 @@ export const StockApiAxiosParamCreator = function (configuration?: Configuration
         /**
          * 
          * @summary Get list of stocks
+         * @param {string} [q] Filter string using &#x60;key:value&#x60; pairs joined by &#x60;~&#x60;. Example: &#x60;status:LISTED~type:STOCK&#x60; filters stocks that are listed and of type STOCK. 
+         * @param {number} [size] Number of records to return (max size is server-defined)
+         * @param {number} [page] Page number (starting from 1)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getStocks: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getStocks: async (q?: string, size?: number, page?: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/v4/stocks`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -668,6 +671,18 @@ export const StockApiAxiosParamCreator = function (configuration?: Configuration
             const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (q !== undefined) {
+                localVarQueryParameter['q'] = q;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
 
 
     
@@ -693,11 +708,14 @@ export const StockApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary Get list of stocks
+         * @param {string} [q] Filter string using &#x60;key:value&#x60; pairs joined by &#x60;~&#x60;. Example: &#x60;status:LISTED~type:STOCK&#x60; filters stocks that are listed and of type STOCK. 
+         * @param {number} [size] Number of records to return (max size is server-defined)
+         * @param {number} [page] Page number (starting from 1)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getStocks(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetStocks200Response>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getStocks(options);
+        async getStocks(q?: string, size?: number, page?: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetStocks200Response>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getStocks(q, size, page, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['StockApi.getStocks']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -715,14 +733,43 @@ export const StockApiFactory = function (configuration?: Configuration, basePath
         /**
          * 
          * @summary Get list of stocks
+         * @param {StockApiGetStocksRequest} requestParameters Request parameters.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getStocks(options?: RawAxiosRequestConfig): AxiosPromise<GetStocks200Response> {
-            return localVarFp.getStocks(options).then((request) => request(axios, basePath));
+        getStocks(requestParameters: StockApiGetStocksRequest = {}, options?: RawAxiosRequestConfig): AxiosPromise<GetStocks200Response> {
+            return localVarFp.getStocks(requestParameters.q, requestParameters.size, requestParameters.page, options).then((request) => request(axios, basePath));
         },
     };
 };
+
+/**
+ * Request parameters for getStocks operation in StockApi.
+ * @export
+ * @interface StockApiGetStocksRequest
+ */
+export interface StockApiGetStocksRequest {
+    /**
+     * Filter string using &#x60;key:value&#x60; pairs joined by &#x60;~&#x60;. Example: &#x60;status:LISTED~type:STOCK&#x60; filters stocks that are listed and of type STOCK. 
+     * @type {string}
+     * @memberof StockApiGetStocks
+     */
+    readonly q?: string
+
+    /**
+     * Number of records to return (max size is server-defined)
+     * @type {number}
+     * @memberof StockApiGetStocks
+     */
+    readonly size?: number
+
+    /**
+     * Page number (starting from 1)
+     * @type {number}
+     * @memberof StockApiGetStocks
+     */
+    readonly page?: number
+}
 
 /**
  * StockApi - object-oriented interface
@@ -734,12 +781,13 @@ export class StockApi extends BaseAPI {
     /**
      * 
      * @summary Get list of stocks
+     * @param {StockApiGetStocksRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof StockApi
      */
-    public getStocks(options?: RawAxiosRequestConfig) {
-        return StockApiFp(this.configuration).getStocks(options).then((request) => request(this.axios, this.basePath));
+    public getStocks(requestParameters: StockApiGetStocksRequest = {}, options?: RawAxiosRequestConfig) {
+        return StockApiFp(this.configuration).getStocks(requestParameters.q, requestParameters.size, requestParameters.page, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

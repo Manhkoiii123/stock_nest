@@ -55,7 +55,10 @@ export class VndirectClientService {
   async getStocks() {
     try {
       this.logger.log('Fetching stocks from Vndirect API...');
-      const response = await this.stockApi.getStocks();
+      const response = await this.stockApi.getStocks({
+        q: 'type:STOCK~status:LISTED',
+        size: 20,
+      });
 
       const data = response?.data?.data;
       if (!data) {

@@ -8,6 +8,7 @@ export class StockProcessorCommand extends CommandRunner {
   }
 
   async run(): Promise<void> {
+    console.log('Starting stock processing...');
     await this.stockProcessorService.processStocks();
   }
 }

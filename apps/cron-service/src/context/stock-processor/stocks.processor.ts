@@ -30,10 +30,6 @@ export class StocksProcessor {
         });
       }
     }
-    console.log(
-      '🚀 ~ StocksProcessor ~ process ~ stockWithPriceHistory:',
-      stockWithPriceHistory,
-    );
 
     // const processedStocks = stocks
     //   .filter((s) => s.code)
